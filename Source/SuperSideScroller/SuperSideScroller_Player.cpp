@@ -43,3 +43,8 @@ void ASuperSideScroller_Player::StopSprinting() {
 		GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 	}
 }
+
+void ASuperSideScroller_Player::ThrowProjectile()
+{
+	UE_LOG(LogTemp, Warning, TEXT("THROW PROJECTILE"));
+}
