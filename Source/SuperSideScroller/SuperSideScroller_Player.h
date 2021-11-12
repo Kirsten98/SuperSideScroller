@@ -18,6 +18,7 @@ class SUPERSIDESCROLLER_API ASuperSideScroller_Player : public ASuperSideScrolle
 public: 
 	ASuperSideScroller_Player();	
 
+	void ThrowProjectile();
 protected:
 	//Override base character class function to setup our player input component
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
