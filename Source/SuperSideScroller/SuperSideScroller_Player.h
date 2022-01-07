@@ -30,4 +30,7 @@ protected:
 private:
 	//Bool to control if we are sprinting. Failsafe
 	bool bIsSprinting;
+
+	UPROPERTY(EditAnywhere)
+		class UAnimMontage* ThrowMontage;
 };
