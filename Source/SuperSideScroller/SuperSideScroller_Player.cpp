@@ -4,6 +4,11 @@
 #include "SuperSideScroller_Player.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Animation/AnimInstance.h"
+#include "Components/SphereComponent.h"
+#include "Engine/World.h"
+#include "PlayerProjectile.h"
+
 
 ASuperSideScroller_Player::ASuperSideScroller_Player()
 {
@@ -12,6 +17,8 @@ ASuperSideScroller_Player::ASuperSideScroller_Player()
 
 	// Set our max walk speed to 300.0f
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+
+	
 }
 
 void ASuperSideScroller_Player::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -19,8 +26,10 @@ void ASuperSideScroller_Player::SetupPlayerInputComponent(class UInputComponent*
 	//Not always necessary, but good practice to call the function in the base class with super
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	PlayerInputComponent->BindAction("Throw", EInputEvent::IE_Pressed, this, &ASuperSideScroller_Player::ThrowProjectile);
 	PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Pressed, this, &ASuperSideScroller_Player::Sprint);
 	PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Released, this, &ASuperSideScroller_Player::StopSprinting);
+
 }
 
 void ASuperSideScroller_Player::Sprint()
@@ -46,5 +55,38 @@ void ASuperSideScroller_Player::StopSprinting() {
 
 void ASuperSideScroller_Player::ThrowProjectile()
 {
-	UE_LOG(LogTemp, Warning, TEXT("THROW PROJECTILE"));
+	UE_LOG(LogTemp, Warning, TEXT("Throw Projectile"));
+	if (ThrowMontage)
+	{
+		bool bIsMontagePlaying = GetMesh()->GetAnimInstance()->Montage_IsPlaying(ThrowMontage);
+
+		if (!bIsMontagePlaying)
+		{
+			GetMesh()->GetAnimInstance()->Montage_Play(ThrowMontage, 2.0f);
+		}
+	}
+}
+
+void ASuperSideScroller_Player::SpawnProjectile()
+{
+	if (PlayerProjectile)
+	{
+		UWorld* World = GetWorld();
+		if (World)
+		{
+			FActorSpawnParameters SpawnParams;
+			SpawnParams.Owner = this;
+
+			//Spawns the projectile at the ProjectileSocket and sets the rotation to the players rotation
+			FVector SpawnLocation = this->GetMesh()->GetSocketLocation(FName("ProjectileSocket"));
+			FRotator Rotation = GetActorForwardVector().Rotation();
+
+			APlayerProjectile* Projectile = World->SpawnActor<APlayerProjectile>(PlayerProjectile, SpawnLocation, Rotation, SpawnParams);
+
+			if (Projectile)
+			{
+				Projectile->CollisionComp->MoveIgnoreActors.Add(SpawnParams.Owner);
+			}
+		}
+	}
 }

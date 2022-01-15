@@ -19,6 +19,8 @@ public:
 	ASuperSideScroller_Player();	
 
 	void ThrowProjectile();
+
+	void SpawnProjectile();
 protected:
 	//Override base character class function to setup our player input component
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -30,4 +32,12 @@ protected:
 private:
 	//Bool to control if we are sprinting. Failsafe
 	bool bIsSprinting;
+
+	UPROPERTY(EditAnywhere)
+		class UAnimMontage* ThrowMontage;
+
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<class APlayerProjectile> PlayerProjectile;
+
+
 };
