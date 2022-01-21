@@ -32,4 +32,10 @@ private:
 	//Static Mesh Component
 	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
 		class UStaticMeshComponent* MeshComp;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = Projetile)
+		class UAudioComponent* ProjectileMovementSound;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
+		class UParticleSystemComponent* ProjectileEffect;
 };
