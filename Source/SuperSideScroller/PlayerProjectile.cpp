@@ -8,6 +8,7 @@
 #include "EnemyBase.h"
 #include "Components/AudioComponent.h"
 #include "Engine/Classes/Particles/ParticleSystemComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APlayerProjectile::APlayerProjectile()
@@ -37,6 +38,12 @@ APlayerProjectile::APlayerProjectile()
 	ProjectileEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Projectile Effect"));
 	ProjectileEffect->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
 
+	DestroyEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Destroy Effect"));
+	DestroyEffect->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+
+	DestroySound = CreateDefaultSubobject<UAudioComponent>(TEXT("Destroy Sound"));
+	DestroySound->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+
 	InitialLifeSpan = 3.0f;
 }
 
@@ -55,5 +62,9 @@ void APlayerProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 
 void APlayerProjectile::ExplodeProjectile()
 {
+
+	UGameplayStatics::SpawnSoundAttached(DestroySound->Sound, RootComponent, FName("DestroySound"), this->GetActorLocation(), EAttachLocation::KeepWorldPosition, true, 1.0f, 1.0f, 0.0f, nullptr, nullptr, true);
+	UGameplayStatics::SpawnEmitterAttached(DestroyEffect->Template, RootComponent, FName("DestroyEffect"), this->GetActorLocation(), this->GetActorRotation(), this->GetActorScale(), EAttachLocation::KeepWorldPosition, true, EPSCPoolMethod::None, true);
+
 	Destroy();
 }

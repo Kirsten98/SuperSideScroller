@@ -38,4 +38,10 @@ private:
 
 	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
 		class UParticleSystemComponent* ProjectileEffect;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
+		class UParticleSystemComponent* DestroyEffect;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
+		class UAudioComponent* DestroySound;
 };
