@@ -2,6 +2,7 @@
 
 
 #include "PickableActor_Collectable.h"
+#include "SuperSideScroller_Player.h"
 
 void APickableActor_Collectable::BeginPlay()
 {
@@ -12,4 +13,6 @@ void APickableActor_Collectable::BeginPlay()
 void APickableActor_Collectable::PlayerPickedUp(class ASuperSideScroller_Player* Player)
 {
 	Super::PlayerPickedUp(Player);
+
+	Player->IncrementNumberofCollectables(CollectableValue);
 }

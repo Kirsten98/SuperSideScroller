@@ -21,6 +21,15 @@ public:
 	void ThrowProjectile();
 
 	void SpawnProjectile();
+
+	UFUNCTION(BlueprintPure)
+	int32 GetCurrentNumberofCollectables()
+	{
+		return NumberofCollectables;
+	}
+
+	void IncrementNumberofCollectables(int32 Value);
+
 protected:
 	//Override base character class function to setup our player input component
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -39,5 +48,5 @@ private:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class APlayerProjectile> PlayerProjectile;
 
-
+	int32 NumberofCollectables;
 };
