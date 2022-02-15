@@ -12,4 +12,6 @@ void APickableActor_Powerup::BeginPlay()
 void APickableActor_Powerup::PlayerPickedUp(class ASuperSideScroller_Player* Player)
 {
 	Super::PlayerPickedUp(Player);
+
+	Player->IncreasedMovementPowerup();
 }
