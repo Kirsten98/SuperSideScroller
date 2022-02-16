@@ -21,13 +21,26 @@ public:
 	void ThrowProjectile();
 
 	void SpawnProjectile();
+
+	UFUNCTION(BlueprintPure)
+	int32 GetCurrentNumberofCollectables()
+	{
+		return NumberofCollectables;
+	}
+
+	void IncrementNumberofCollectables(int32 Value);
+
+	void IncreasedMovementPowerup();
+
 protected:
 	//Override base character class function to setup our player input component
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; 
 
 	void Sprint();
 
 	void StopSprinting();
+
+	void EndPowerup();
 
 private:
 	//Bool to control if we are sprinting. Failsafe
@@ -39,5 +52,10 @@ private:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class APlayerProjectile> PlayerProjectile;
 
+	int32 NumberofCollectables;
 
+	//This timer handle will keep track of how much time has elapsed since it was initiated.
+	FTimerHandle PowerupHandle;
+
+	bool bHasPowerupActive;
 };
