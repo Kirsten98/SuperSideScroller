@@ -43,4 +43,9 @@ private:
 	UPROPERTY(EditAnywhere)
 		int32 CollectableValue = 1;
 
+	void AddCollectable(class ASuperSideScroller_Player* Player);
+
+	void PlayHitSound();
+
+	void PlayHitExplosion();
 };

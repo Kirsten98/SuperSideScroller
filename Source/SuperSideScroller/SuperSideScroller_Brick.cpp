@@ -4,6 +4,10 @@
 #include "SuperSideScroller_Brick.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
+#include "Engine/World.h"
+#include "Kismet/GameplayStatics.h"
+#include "SuperSideScroller_Player.h"
+
 
 // Sets default values
 ASuperSideScroller_Brick::ASuperSideScroller_Brick()
@@ -33,5 +37,46 @@ void ASuperSideScroller_Brick::BeginPlay()
 
 void ASuperSideScroller_Brick::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	ASuperSideScroller_Player* Player = Cast<ASuperSideScroller_Player>(OtherActor);
 
+	if (Player && bHasCollectable)
+	{
+		AddCollectable(Player);
+		PlayHitSound();
+		PlayHitExplosion();
+		Destroy();
+	}
 }
+
+void ASuperSideScroller_Brick::AddCollectable(class ASuperSideScroller_Player* Player)
+{
+	Player->IncrementNumberofCollectables(CollectableValue);
+	
+}
+
+void ASuperSideScroller_Brick::PlayHitSound()
+{
+	UWorld* World = GetWorld();
+
+	if (World)
+	{
+		if (HitSound)
+		{
+			UGameplayStatics::SpawnSoundAtLocation(World, HitSound, GetActorLocation());
+		}
+	}
+}
+
+void ASuperSideScroller_Brick::PlayHitExplosion()
+{
+	UWorld* World = GetWorld();
+
+	if (World)
+	{
+		if (Explosion)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(World, Explosion, GetActorTransform());
+		}
+	}
+}
+
